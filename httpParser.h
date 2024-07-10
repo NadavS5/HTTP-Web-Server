@@ -1,24 +1,24 @@
-#ifndef FileLib   
-#define FileLib   
-
-
-char* getPath(char* request);
-char* getMethod(char* request);
-
-#endif
-
 #ifndef HttpMethod
 
 typedef enum{
     GET,
     POST,
     PUT,
-    DELETE,
     HEAD,
     PATCH,
     TRACE,
-    OPTIONS
+    OPTIONS,
+    
 
 } HttpMethod ;
+#endif
+
+#ifndef httpParser   
+#define httpParser   
+
+
+char* getPath(char* request);
+HttpMethod getMethod(char* request);
 
 #endif
+

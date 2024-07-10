@@ -1,11 +1,11 @@
 #ifndef Router   
-#define Router   
-void GetFileByName(char* request);
+#define Router
 
+//route is the http route and function is what to do when this route get called
+void map(char* route, void* func);
 
-void FileExits(char* path);
-
-char* FileNotFoundName();
+// get the function that is assigned to the route
+void* GetFunctionByRoute(char* route ) 
 
 
 #endif      

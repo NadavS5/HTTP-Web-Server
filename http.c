@@ -2,20 +2,44 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include "FileLib.h"
+#include "httpParser.h"
 #include <stdbool.h>
-#include "Router.h"
+//#include "Router.h"
 #define PORT 9090
-// #define bool UINT8
-// #define true 1
-// #define false 0
 
 
+char* FileRead(FILE* f, UINT32* FileLenOut ) {
+    
+    UINT32 file_len;
+    fseek(f, 0, SEEK_END);
+    file_len = ftell(f);
+    fseek(f,0,SEEK_SET );
+
+    printf("file size: %u bytes\n",file_len );
+
+    *FileLenOut = file_len;
+
+    char* fileData =  malloc(file_len);
+    fread(fileData ,1, file_len ,f);
+    fclose(f);
+    return fileData;
+}
+
+void SendFile(char* path, SOCKET client) {
+    UINT32 file_len;
+    FILE* f = fopen(path, "r");
+    printf("opened: %s\n", path);
+    char* data = FileRead(f, &file_len);
+
+    printf("sending %u bytes\n", file_len-10);
+    send(client,data, file_len, 0);
+    free(data);
+
+}
 
 int main() {
 
     bool run = true;
-
 
     WSADATA wsadata;
     WSAStartup(MAKEWORD(2,2), &wsadata);
@@ -37,30 +61,33 @@ int main() {
     while(run == true){
         ///printf("Connected\n");
         recv(client, request , 256, 0);
-        
+        // printf("%u\n", getMethod(request));    
+
+
         if(memcmp(request , "GET / ",6) ==0) {
         
             
-            FILE* f = fopen("src/index.html", "r");
-            char buffer[512]  = {0};
+            //FILE* f = fopen("src/index.html", "r");
+            // char buffer[512]  = {0};
 
-            long int file_len;
-            fseek(f, 0, SEEK_END);
-            file_len = ftell(f);
-            fseek(f,0,SEEK_SET );
+            // long int file_len;
+            // fseek(f, 0, SEEK_END);
+            // file_len = ftell(f);
+            // fseek(f,0,SEEK_SET );
             
-            fread(buffer ,1, file_len ,f);
+            // fread(buffer ,1, file_len ,f);
             
-            fclose(f);
+            // fclose(f);
 
-            //printf("file length: %d \n",file_len);
-            send(client , buffer, file_len ,0);
-        
+            // //printf("file length: %d \n",file_len);
+            // send(client , buffer, file_len ,0);
+            SendFile("src/index.html", client);
 
         }
         
         //printf("%s\n", request);
         
+        shutdown(client, SD_SEND);
         listen(s,10);
         client = accept(s, 0,0 );
         
@@ -68,33 +95,16 @@ int main() {
     //printf("run: %u ", run);
     closesocket(s);
 
-
+    
 
     
 
 }
-char* FileRead(FILE* f, UINT64* FileLenLP ) {
+
+
+
+
+void map(char* path, void* func) {
     
-    UINT64 file_len;
-    fseek(f, 0, SEEK_END);
-    file_len = ftell(f);
-    fseek(f,0,SEEK_SET );
-    
-    char* fileData =  malloc(file_len);
-    fread(fileData ,1, file_len ,f);
-    fclose(f);
 }
-
-void SendFile(char* path, SOCKET client) {
-    UINT64 file_len;
-    FILE* f = fopen(path, "r");
-    char* data = FileRead(f, &file_len);
-    send(client,data, file_len, 0);
-
-
-}
-
-
-void SendError404() {
-
-}
+void home(){};

@@ -7,7 +7,6 @@ typedef enum{
     GET,
     POST,
     PUT,
-    DELETE,
     HEAD,
     PATCH,
     TRACE,
@@ -31,9 +30,6 @@ HttpMethod getMethod(char* request) {
         return POST;
     }
     if(strncmp(method, "PUT", 3)==0) {
-        return PUT;
-    }
-    if(strncmp(method, "DELETE", 3)==0) {
         return PUT;
     }
     

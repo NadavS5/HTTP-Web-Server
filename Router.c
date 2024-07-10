@@ -1,6 +1,3 @@
-void GetFileByName();
-
-
-void FileExits(char path[]);
-
-char* FileNotFoundName();
+void map(char* path, void* func) {
+    
+}
