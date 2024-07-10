@@ -73,7 +73,7 @@ int main() {
     
 
 }
-char* ReadFile(FILE* f, UINT64* file_len ) {
+char* FileRead(FILE* f, UINT64* FileLenLP ) {
     
     UINT64 file_len;
     fseek(f, 0, SEEK_END);
@@ -88,7 +88,7 @@ char* ReadFile(FILE* f, UINT64* file_len ) {
 void SendFile(char* path, SOCKET client) {
     UINT64 file_len;
     FILE* f = fopen(path, "r");
-    char* data = ReadFile(f, &file_len);
+    char* data = FileRead(f, &file_len);
     send(client,data, file_len, 0);
 
 
