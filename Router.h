@@ -1,3 +1,11 @@
+#include <winsock2.h>
+#include <stdlib.h>       
+#include <stdio.h>
+
+
+
+
+
 #ifndef Router   
 #define Router
 
@@ -5,7 +13,10 @@
 void map(char* route, void* func);
 
 // get the function that is assigned to the route
-void* GetFunctionByRoute(char* route ) 
+void* GetFunctionByRoute(char* route ); 
 
 
-#endif      
+void SendFile(char* path, SOCKET client);
+char* FileRead(FILE* f, UINT32* FileLenOut );
+
+#endif

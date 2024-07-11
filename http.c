@@ -4,38 +4,11 @@
 #include <stdlib.h>
 #include "httpParser.h"
 #include <stdbool.h>
-//#include "Router.h"
+#include "Router.h"
 #define PORT 9090
 
 
-char* FileRead(FILE* f, UINT32* FileLenOut ) {
-    
-    UINT32 file_len;
-    fseek(f, 0, SEEK_END);
-    file_len = ftell(f);
-    fseek(f,0,SEEK_SET );
 
-    printf("file size: %u bytes\n",file_len );
-
-    *FileLenOut = file_len;
-
-    char* fileData =  malloc(file_len);
-    fread(fileData ,1, file_len ,f);
-    fclose(f);
-    return fileData;
-}
-
-void SendFile(char* path, SOCKET client) {
-    UINT32 file_len;
-    FILE* f = fopen(path, "r");
-    printf("opened: %s\n", path);
-    char* data = FileRead(f, &file_len);
-
-    printf("sending %u bytes\n", file_len-10);
-    send(client,data, file_len, 0);
-    free(data);
-
-}
 
 int main() {
 
@@ -67,20 +40,7 @@ int main() {
         if(memcmp(request , "GET / ",6) ==0) {
         
             
-            //FILE* f = fopen("src/index.html", "r");
-            // char buffer[512]  = {0};
-
-            // long int file_len;
-            // fseek(f, 0, SEEK_END);
-            // file_len = ftell(f);
-            // fseek(f,0,SEEK_SET );
-            
-            // fread(buffer ,1, file_len ,f);
-            
-            // fclose(f);
-
-            // //printf("file length: %d \n",file_len);
-            // send(client , buffer, file_len ,0);
+            SendFile("headers.txt", client);
             SendFile("src/index.html", client);
 
         }
@@ -104,7 +64,7 @@ int main() {
 
 
 
-void map(char* path, void* func) {
-    
-}
-void home(){};
+// void map(char* path, void* func) {
+//     map("/", &home);
+// }
+// void home(){};
