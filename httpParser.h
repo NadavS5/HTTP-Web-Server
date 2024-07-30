@@ -1,5 +1,4 @@
 #ifndef HttpMethod
-
 typedef enum{
     GET,
     POST,

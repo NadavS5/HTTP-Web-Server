@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <winsock2.h>
 #include <windows.h>
+
 
 char* cachedFiles() {
 
@@ -25,7 +27,7 @@ char* FileRead(FILE* f, UINT32* FileLenOut ) {
     file_len = ftell(f);
     fseek(f,0,SEEK_SET );
 
-    printf("file size: %u bytes\n",file_len );
+    
 
     *FileLenOut = file_len;
 
@@ -38,11 +40,12 @@ char* FileRead(FILE* f, UINT32* FileLenOut ) {
 void SendFile(char* path, SOCKET client) {
     UINT32 file_len;
     FILE* f = fopen(path, "rb");
-    printf("opened: %s\n", path);
+    //printf("opened: %s length: %u\n" , path , file_len);
     char* data = FileRead(f, &file_len);
 
-    printf("sending %u bytes\n", file_len);
-    send(client,data, file_len, 0);
+    // printf("file length: %u\n",file_len );
+    UINT32 code = send(client,data, file_len, 0);
+    printf("code is: %u, file len is: %u\n",WSAGetLastError(),file_len);
     free(data);
 
 }
